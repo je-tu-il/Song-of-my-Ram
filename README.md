@@ -6,7 +6,6 @@ Interface graphique permettant de lire la mémoire virtuelle d'un processus Wind
 
 - Système d'exploitation : Windows
 - Python 3.x
-- Privilèges Administrateur requis pour l'accès à la mémoire des processus
 - Bibliothèque `pyaudio`
 
 ## Installation
