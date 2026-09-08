@@ -81,14 +81,14 @@ class RAMOrchestrator:
     def __init__(self, root):
         self.root = root
         self.root.title("RAM Audio Engine")
-        self.root.geometry("550x380")
+        self.root.geometry("550x420")
         
         style = ttk.Style()
         style.theme_use('clam')
         
         self.is_playing = False
         self.audio_thread = None
-        self.bpm = 100
+        self.bpm = 60
         self.max_processes = 10
         
         self.scales = {
@@ -99,16 +99,16 @@ class RAMOrchestrator:
         }
         
         self.roles = [
-            {"name": "Acoustic Bass", "channel": 0, "instrument": 32, "dur_mult": 1.0, "scale": "bass", "vol": 0.9},
-            {"name": "Grand Piano", "channel": 1, "instrument": 0, "dur_mult": 0.5, "scale": "chord", "vol": 0.7},
-            {"name": "Harp", "channel": 2, "instrument": 46, "dur_mult": 0.25, "scale": "arpeggio", "vol": 0.6},
-            {"name": "Flute", "channel": 3, "instrument": 73, "dur_mult": 0.125, "scale": "melody", "vol": 0.8},
-            {"name": "Violin", "channel": 4, "instrument": 40, "dur_mult": 1.0, "scale": "chord", "vol": 0.5},
-            {"name": "Acoustic Guitar", "channel": 5, "instrument": 24, "dur_mult": 0.5, "scale": "arpeggio", "vol": 0.6},
-            {"name": "Vibraphone", "channel": 6, "instrument": 11, "dur_mult": 0.25, "scale": "melody", "vol": 0.7},
-            {"name": "Church Organ", "channel": 7, "instrument": 19, "dur_mult": 1.0, "scale": "bass", "vol": 0.6},
-            {"name": "Oboe", "channel": 8, "instrument": 68, "dur_mult": 0.125, "scale": "melody", "vol": 0.7},
-            {"name": "Choir Aahs", "channel": 10, "instrument": 52, "dur_mult": 2.0, "scale": "chord", "vol": 0.5}
+            {"name": "Cello", "channel": 0, "instrument": 42, "dur_mult": 1.0, "scale": "bass", "vol": 0.9},
+            {"name": "Electric Piano", "channel": 1, "instrument": 4, "dur_mult": 0.5, "scale": "chord", "vol": 0.7},
+            {"name": "Marimba", "channel": 2, "instrument": 12, "dur_mult": 0.25, "scale": "arpeggio", "vol": 0.6},
+            {"name": "Alto Sax", "channel": 3, "instrument": 65, "dur_mult": 0.125, "scale": "melody", "vol": 0.8},
+            {"name": "Synth Pad", "channel": 4, "instrument": 88, "dur_mult": 2.0, "scale": "chord", "vol": 0.5},
+            {"name": "Clean Guitar", "channel": 5, "instrument": 27, "dur_mult": 0.5, "scale": "arpeggio", "vol": 0.6},
+            {"name": "Glockenspiel", "channel": 6, "instrument": 9, "dur_mult": 0.25, "scale": "melody", "vol": 0.7},
+            {"name": "Synth Bass", "channel": 7, "instrument": 38, "dur_mult": 1.0, "scale": "bass", "vol": 0.8},
+            {"name": "Clarinet", "channel": 8, "instrument": 71, "dur_mult": 0.125, "scale": "melody", "vol": 0.7},
+            {"name": "Pizzicato", "channel": 10, "instrument": 45, "dur_mult": 0.5, "scale": "chord", "vol": 0.6}
         ]
         
         self.target_processes = []
@@ -128,6 +128,15 @@ class RAMOrchestrator:
         ttk.Radiobutton(mode_frame, text="Electronic (Raw PCM)", variable=self.mode_var, value="pcm").pack(side=tk.LEFT, padx=10)
         ttk.Radiobutton(mode_frame, text="Concerto (MIDI Instruments)", variable=self.mode_var, value="midi").pack(side=tk.LEFT, padx=10)
 
+        bpm_frame = ttk.Frame(main_frame)
+        bpm_frame.pack(pady=5, fill=tk.X)
+        ttk.Label(bpm_frame, text="Tempo (BPM):").pack(side=tk.LEFT)
+        self.bpm_var = tk.IntVar(value=self.bpm)
+        self.bpm_slider = ttk.Scale(bpm_frame, from_=20, to=200, variable=self.bpm_var, command=self.update_bpm)
+        self.bpm_slider.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=10)
+        self.bpm_label = ttk.Label(bpm_frame, text=str(self.bpm))
+        self.bpm_label.pack(side=tk.LEFT)
+
         self.info_text = tk.Text(main_frame, height=8, width=60, state=tk.DISABLED, bg="#f0f0f0", font=("Consolas", 9))
         self.info_text.pack(pady=10)
 
@@ -136,6 +145,10 @@ class RAMOrchestrator:
 
         ttk.Button(btn_frame, text="Lecture", command=self.play, width=15).pack(side=tk.LEFT, padx=10)
         ttk.Button(btn_frame, text="Pause", command=self.stop, width=15).pack(side=tk.RIGHT, padx=10)
+
+    def update_bpm(self, val):
+        self.bpm = int(float(val))
+        self.bpm_label.config(text=str(self.bpm))
 
     def auto_select_processes(self):
         procs = []
@@ -219,7 +232,6 @@ class RAMOrchestrator:
 
         readers = [ProcessReader(p['pid']) for p in self.target_processes]
         
-        tick_duration = (60.0 / self.bpm) / 8 
         next_tick_time = time.perf_counter()
         tick = 0
         
@@ -227,6 +239,7 @@ class RAMOrchestrator:
 
         while self.is_playing:
             now = time.perf_counter()
+            tick_duration = (60.0 / self.bpm) / 8 
             
             remaining_notes = []
             for off_time, channel, note in active_notes:
