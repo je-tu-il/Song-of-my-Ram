@@ -1,2 +1,7 @@
 psutil>=5.9.0
-# pyaudio>=0.2.14  # Optionnel : requis uniquement pour le mode expérimental Raw PCM
+# Dépendances optionnelles (tout fonctionne en pur Python + Tkinter + WinMM sans installation lourde) :
+# numpy>=1.26.0          # Accélération vectorielle Images / Vidéo / Synthèse Audio
+# pillow>=10.0.0         # Encodage GIF animé & PNG accéléré
+# opencv-python>=4.9.0   # Encodage vidéo MP4/AVI supplémentaire
+# imageio>=2.34.0        # Backend vidéo alternatif
+# pyaudio>=0.2.14        # Backend audio PCM alternatif (WinMM waveOut déjà intégré sous Windows)

@@ -13,3 +13,4 @@ venv/
 *.zip
 .vscode/
 .idea/
+ram_outputs/

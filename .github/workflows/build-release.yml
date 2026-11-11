@@ -32,7 +32,7 @@ jobs:
 
       - name: Build Standalone Executable (PyInstaller)
         run: |
-          pyinstaller --noconfirm --clean --onefile --windowed --uac-admin --name "Song-of-my-Ram" main.py
+          pyinstaller --noconfirm --clean --onefile --windowed --uac-admin --paths . --name "Song-of-my-Ram" main.py
 
       - name: Prepare Release Artifacts
         shell: pwsh
