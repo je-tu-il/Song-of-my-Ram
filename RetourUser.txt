@@ -1,0 +1,9 @@
+Je voudrais que tu bonifies l'interface et la simplifier
+Crée plusieurs onglet 
+le son et personnalisable si on active les parametres avané
+generation d'image sois instantanée sois sur la durée en generation non stop, algorythmer tout ca pour un rendu plus interessant pariel des parametres tres basique et un mode avancer
+Un generateur de mdp avec comme base la ram, meme chose pour les réglages
+Un generateur de video
+Un generateur de texte pareil algorithme un minimum
+Un generatur de modele 3d pareil sois en one shot sois en continu avec visualisation en direct
+Pour tous mettre des réglages simple et un mode avancer plus complexe
