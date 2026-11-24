@@ -42,18 +42,18 @@ class AudioTab(GeneratorTabShell):
     def _build_simple(self) -> None:
         sf = self.simple_frame
 
-        ttk.Label(sf, text="Moteur Audio :", style="Section.TLabel").pack(anchor="w")
+        ttk.Label(sf, text="Source de synthèse", style="Section.TLabel").pack(anchor="w")
         self.mode_var = tk.StringVar(value="midi")
         ttk.Radiobutton(
             sf,
-            text="Concerto MIDI (Instruments natifs Windows)",
+            text="Instruments MIDI (Windows)",
             variable=self.mode_var,
             value="midi",
             command=self._push_config,
         ).pack(anchor="w", pady=(4, 2))
         ttk.Radiobutton(
             sf,
-            text="Synthétiseur RAM (Ondes PCM temps réel)",
+            text="Synthétiseur PCM en temps réel",
             variable=self.mode_var,
             value="synth",
             command=self._push_config,
@@ -78,7 +78,7 @@ class AudioTab(GeneratorTabShell):
         btn_row.pack(fill=tk.X, pady=(2, 0))
         self.btn_play = ttk.Button(btn_row, text="▶ Lecture", style="Success.TButton", command=self.play)
         self.btn_play.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 4))
-        self.btn_stop = ttk.Button(btn_row, text="⏹ Stop", style="Danger.TButton", command=self.stop, state=tk.DISABLED)
+        self.btn_stop = ttk.Button(btn_row, text="Arrêter la lecture", style="Danger.TButton", command=self.stop, state=tk.DISABLED)
         self.btn_stop.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(4, 0))
 
     def _build_advanced(self) -> None:
@@ -161,12 +161,12 @@ class AudioTab(GeneratorTabShell):
         self.swing_var = tk.BooleanVar(value=False)
         ttk.Checkbutton(af, text="Rythme Swing", variable=self.swing_var, command=self._push_config).pack(anchor="w", pady=2)
 
-        ttk.Button(af, text="💾 Exporter Extrait WAV (5s)", command=self.export_wav).pack(fill=tk.X, pady=(8, 0))
+        ttk.Button(af, text="💾 Exporter 5 secondes en WAV", command=self.export_wav).pack(fill=tk.X, pady=(8, 0))
 
     def _build_stage(self) -> None:
         hdr = tk.Frame(self.stage_frame, bg=COLORS["card"], padx=14, pady=10)
         hdr.grid(row=0, column=0, sticky="ew")
-        tk.Label(hdr, text="Oscilloscope & Télémétrie Audio RAM", bg=COLORS["card"], fg=COLORS["text"], font=("Segoe UI", 10, "bold")).pack(side=tk.LEFT)
+        tk.Label(hdr, text="Signal audio en direct", bg=COLORS["card"], fg=COLORS["text"], font=("Segoe UI", 10, "bold")).pack(side=tk.LEFT)
         self.backend_lbl = tk.Label(hdr, text="Prêt", bg=COLORS["card"], fg=COLORS["accent"], font=("Consolas", 9))
         self.backend_lbl.pack(side=tk.RIGHT)
 
